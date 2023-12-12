@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import {SafeAreaView, Text, TouchableOpacity} from 'react-native';
+import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import {PitchDetector} from 'react-native-pitch-detector';
 
 function App(): JSX.Element {
@@ -34,12 +34,14 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView>
-      <Text>Test</Text>
-      <Text>{data?.tone}</Text>
-      <Text>{isRecording ? 'ON' : 'OFF'}</Text>
-      <TouchableOpacity onPress={isRecording ? stop : start}>
-        <Text>{isRecording ? 'STOP' : 'START'}</Text>
-      </TouchableOpacity>
+      <View style={{height: 100, width: 100, backgroundColor: 'white'}}>
+        <Text>Test</Text>
+        <Text>{data?.tone}</Text>
+        <Text>{isRecording ? 'ON' : 'OFF'}</Text>
+        <TouchableOpacity onPress={isRecording ? stop : start}>
+          <Text>{isRecording ? 'STOP' : 'START'}</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }

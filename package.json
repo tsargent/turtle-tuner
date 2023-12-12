@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.72.7",
+    "react-native-permissions": "^4.0.0",
     "react-native-pitch-detector": "^0.1.6"
   },
   "devDependencies": {
@@ -33,5 +34,8 @@
   },
   "engines": {
     "node": ">=16"
-  }
+  },
+  "reactNativePermissionsIOS": [
+    "Microphone"
+  ]
 }
