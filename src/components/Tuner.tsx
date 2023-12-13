@@ -39,7 +39,7 @@ function Tuner(): JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.tone}>{data?.tone}</Text>
-      <Text style={styles.frequency}>{data?.frequency}</Text>
+      <Text style={styles.frequency}>{data?.frequency.toFixed(2)}</Text>
     </View>
   );
 }
