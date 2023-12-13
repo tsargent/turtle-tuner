@@ -8,6 +8,7 @@
 import React from 'react';
 import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {PitchDetector} from 'react-native-pitch-detector';
+import Meter from './Meter';
 
 function Tuner(): JSX.Element {
   const [data, setData] = React.useState({tone: '--', frequency: 0});
@@ -38,6 +39,7 @@ function Tuner(): JSX.Element {
 
   return (
     <View style={styles.container}>
+      <Meter frequency={data?.frequency} />
       <Text style={styles.tone}>{data?.tone}</Text>
       <Text style={styles.frequency}>{data?.frequency.toFixed(2)}</Text>
     </View>
