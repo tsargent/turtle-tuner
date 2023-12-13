@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {PitchDetector} from 'react-native-pitch-detector';
 
 function Tuner(): JSX.Element {
@@ -26,24 +26,38 @@ function Tuner(): JSX.Element {
   };
 
   React.useEffect(() => {
+    PitchDetector.start();
     PitchDetector.addListener(data => {
-      console.log(data);
       setData(data);
     });
     return () => {
+      PitchDetector.stop();
       PitchDetector.removeListener();
     };
   }, []);
 
-  console.log(isRecording);
   return (
-    <View>
-      <Text>{data?.tone}</Text>
-      <TouchableOpacity onPress={isRecording ? stop : start}>
-        <Text>{isRecording ? 'STOP' : 'START'}</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.tone}>{data?.tone}</Text>
+      <Text style={styles.frequency}>{data?.frequency}</Text>
     </View>
   );
 }
 
 export default Tuner;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tone: {
+    fontSize: 50,
+    fontWeight: 'bold',
+  },
+  frequency: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});
