@@ -7,6 +7,7 @@ import {
   Button,
   SafeAreaView,
   TouchableOpacity,
+  Easing,
 } from 'react-native';
 
 function Meter(props: {frequency: number}): JSX.Element {
@@ -26,18 +27,14 @@ function Meter(props: {frequency: number}): JSX.Element {
     console.log('centChange????', centChange);
     Animated.timing(cents, {
       toValue: centChange,
-      duration: 1000,
+      duration: 200,
       useNativeDriver: true,
+      easing: Easing.inOut(Easing.ease),
     }).start();
   }, [centChange]);
 
   console.log('cents', cents);
   console.log('centChange', centChange);
-
-  const interpolated = cents.interpolate({
-    inputRange: [-10, 10],
-    outputRange: ['-45deg', '45deg'],
-  });
 
   const rotate = cents.interpolate({
     inputRange: [-10, 10],
@@ -46,7 +43,9 @@ function Meter(props: {frequency: number}): JSX.Element {
 
   return (
     <View>
-      <Animated.View style={[styles.meter, {transform: [{rotate}]}]} />
+      <Animated.View
+        style={[styles.meter, {transform: [{rotate}, {translateY: -50}]}]}
+      />
       <TouchableOpacity
         onPress={goLeft}
         style={{padding: 20, backgroundColor: 'gray'}}>
@@ -67,7 +66,8 @@ const styles = StyleSheet.create({
   meter: {
     width: 10,
     height: 100,
-    backgroundColor: 'red',
-    // opacity: 0.5,
+    backgroundColor: '#111111',
+    borderRadius: 5,
+    transformOrigin: '10px 2px', // opacity: 0.5,
   },
 });
