@@ -9,6 +9,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Tuner} from './src/components';
+import {Wheel} from './src/components';
 
 const Stack = createNativeStackNavigator();
 

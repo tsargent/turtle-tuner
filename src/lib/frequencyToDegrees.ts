@@ -3,5 +3,5 @@ export default function frequencyToDegrees(frequency: number): number {
   const referenceFrequency = 20; // Reference frequency for the initial octave
   const doublingFactor = Math.log2(frequency / referenceFrequency);
   const outputFrequency = constant + 360 * doublingFactor;
-  return outputFrequency;
+  return outputFrequency % 360;
 }

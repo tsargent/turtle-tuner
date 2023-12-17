@@ -6,25 +6,14 @@
  */
 
 import React from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {PitchDetector} from 'react-native-pitch-detector';
-import Meter from './Meter';
+import Wheel from './Wheel';
+import Rotater from './Rotater';
+import frequencyToDegrees from '../lib/frequencyToDegrees';
 
 function Tuner(): JSX.Element {
   const [data, setData] = React.useState({tone: '--', frequency: 0});
-  const [isRecording, setIsRecording] = React.useState(false);
-
-  const start = async () => {
-    await PitchDetector.start();
-    const status = await PitchDetector.isRecording();
-    setIsRecording(status);
-  };
-
-  const stop = async () => {
-    await PitchDetector.stop();
-    const status = await PitchDetector.isRecording();
-    setIsRecording(status);
-  };
 
   React.useEffect(() => {
     PitchDetector.start();
@@ -37,9 +26,17 @@ function Tuner(): JSX.Element {
     };
   }, []);
 
+  const degrees = React.useMemo(
+    () => frequencyToDegrees(data?.frequency) * -1,
+    [data.frequency],
+  );
+
   return (
     <View style={styles.container}>
-      <Meter frequency={data?.frequency} />
+      <Text>{degrees}</Text>
+      <Rotater degrees={degrees || 0}>
+        <Wheel />
+      </Rotater>
       <Text style={styles.tone}>{data?.tone}</Text>
       <Text style={styles.frequency}>{data?.frequency.toFixed(2)}</Text>
     </View>
