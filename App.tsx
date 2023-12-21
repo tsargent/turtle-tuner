@@ -18,7 +18,11 @@ function App(): JSX.Element {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Tuner" component={Tuner} />
+          <Stack.Screen
+            name="Tuner"
+            component={Tuner}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
