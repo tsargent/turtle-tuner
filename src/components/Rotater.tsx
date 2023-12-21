@@ -1,7 +1,12 @@
 import React, {useRef, useEffect} from 'react';
 import {View, StyleSheet, Animated} from 'react-native';
 
-const Rotater = ({degrees, children}) => {
+type RotaterProps = {
+  degrees: number;
+  children: React.ReactNode;
+};
+
+const Rotater = ({degrees, children}: RotaterProps): React.JSX.Element => {
   const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-function Wheel(): JSX.Element {
+function Wheel(): React.JSX.Element {
   return (
     <View style={styles.container}>
       {notes.map((note, index) => (
