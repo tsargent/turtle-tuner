@@ -6,40 +6,14 @@
  */
 
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {PitchDetector} from 'react-native-pitch-detector';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Text, StyleSheet} from 'react-native';
 
 import ScreenContainer from './ScreenContainer';
-import Wheel from './Wheel';
-import Rotater from './Rotater';
-import frequencyToDegrees from '../lib/frequencyToDegrees';
 
 function Tuner(): React.JSX.Element {
-  const [data, setData] = React.useState({tone: '--', frequency: 0});
-  const insets = useSafeAreaInsets();
-
-  React.useEffect(() => {
-    PitchDetector.start();
-    PitchDetector.addListener(data => {
-      setData(data);
-    });
-    return () => {
-      PitchDetector.stop();
-      PitchDetector.removeListener();
-    };
-  }, []);
-
-  const degrees = React.useMemo(
-    () => frequencyToDegrees(data?.frequency) * -1,
-    [data.frequency],
-  );
-
   return (
     <ScreenContainer>
-      <Rotater degrees={degrees || 0}>
-        <Wheel />
-      </Rotater>
+      <Text>Hello</Text>
     </ScreenContainer>
   );
 }
