@@ -13,6 +13,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ScreenContainer from './ScreenContainer';
 import Wheel from './Wheel';
 import Rotater from './Rotater';
+import Turtle from './Turtle';
 import frequencyToDegrees from '../lib/frequencyToDegrees';
 
 function Tuner(): React.JSX.Element {
@@ -37,9 +38,30 @@ function Tuner(): React.JSX.Element {
 
   return (
     <ScreenContainer>
-      <Rotater degrees={degrees || 0}>
-        <Wheel />
-      </Rotater>
+      <View
+        style={{
+          width: 400,
+          height: 400,
+          borderColor: 'red',
+          borderWidth: 1,
+          flex: 0,
+        }}>
+        <View style={{marginVertical: '80%'}}>
+          <Rotater degrees={degrees || 0}>
+            <Wheel />
+          </Rotater>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            width: '100%',
+            height: '100%',
+          }}>
+          <Turtle />
+        </View>
+      </View>
     </ScreenContainer>
   );
 }
@@ -48,9 +70,9 @@ export default Tuner;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   tone: {
     fontSize: 50,

@@ -9,7 +9,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Tuner} from './src/components';
+import {Tuner, Turtle} from './src/components';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +20,7 @@ function App(): JSX.Element {
         <Stack.Navigator>
           <Stack.Screen
             name="Tuner"
-            component={Tuner}
+            component={Turtle}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
