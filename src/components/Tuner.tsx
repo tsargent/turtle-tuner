@@ -9,58 +9,28 @@ import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {PitchDetector} from 'react-native-pitch-detector';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
+import {useIsEmulator} from 'react-native-device-info';
 import ScreenContainer from './ScreenContainer';
 import Wheel from './Wheel';
 import Rotater from './Rotater';
 import Turtle from './Turtle';
 import frequencyToDegrees from '../lib/frequencyToDegrees';
+import {useTuner} from '../lib';
 
 function Tuner(): React.JSX.Element {
-  const [data, setData] = React.useState({tone: '--', frequency: 0});
-  const insets = useSafeAreaInsets();
-
-  React.useEffect(() => {
-    PitchDetector.start();
-    PitchDetector.addListener(data => {
-      setData(data);
-    });
-    return () => {
-      PitchDetector.stop();
-      PitchDetector.removeListener();
-    };
-  }, []);
-
-  const degrees = React.useMemo(
-    () => frequencyToDegrees(data?.frequency) * -1,
-    [data.frequency],
-  );
+  const tunerData = useTuner();
+  console.log(tunerData);
 
   return (
     <ScreenContainer>
-      <View
-        style={{
-          width: 400,
-          height: 400,
-          borderColor: 'red',
-          borderWidth: 1,
-          flex: 0,
-        }}>
-        <View style={{marginVertical: '80%'}}>
-          <Rotater degrees={degrees || 0}>
-            <Wheel />
-          </Rotater>
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            width: '100%',
-            height: '100%',
-          }}>
-          <Turtle />
-        </View>
+      <View style={styles.turtleContainer}>
+        <Turtle />
+      </View>
+
+      <View style={styles.wheelContainer}>
+        <Rotater degrees={tunerData.degrees || 0}>
+          <Wheel />
+        </Rotater>
       </View>
     </ScreenContainer>
   );
@@ -73,6 +43,16 @@ const styles = StyleSheet.create({
     // flex: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
+  },
+  turtleContainer: {
+    height: '100%',
+    width: '100%',
+    zIndex: 2,
+  },
+  wheelContainer: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
   },
   tone: {
     fontSize: 50,

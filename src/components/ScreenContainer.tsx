@@ -15,10 +15,10 @@ const ScreenContainer = ({
       style={[
         styles.container,
         {
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-          paddingLeft: insets.left,
-          paddingRight: insets.right,
+          // paddingTop: insets.top,
+          // paddingBottom: insets.bottom,
+          // paddingLeft: insets.left,
+          // paddingRight: insets.right,
         },
       ]}>
       {children}

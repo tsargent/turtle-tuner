@@ -20,7 +20,7 @@ function App(): JSX.Element {
         <Stack.Navigator>
           <Stack.Screen
             name="Tuner"
-            component={Turtle}
+            component={Tuner}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
