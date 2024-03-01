@@ -39,20 +39,15 @@ function Tuner(): React.JSX.Element {
 export default Tuner;
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
   turtleContainer: {
     height: '100%',
     width: '100%',
     zIndex: 2,
   },
   wheelContainer: {
+    top: '43%',
     position: 'absolute',
-    height: '100%',
-    width: '100%',
+    transform: [{scale: 0.85}],
   },
   tone: {
     fontSize: 50,
