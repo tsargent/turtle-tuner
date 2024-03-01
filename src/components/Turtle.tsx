@@ -11,7 +11,7 @@ import {Image, StyleSheet, useWindowDimensions} from 'react-native';
 function Turtle(): React.JSX.Element {
   return (
     <Image
-      source={require('../assets/Turtle_Tuner_3-2_a-Full-centered-cropped.png')}
+      source={require('../assets/Turtle_Tuner_3.2-1.png')}
       resizeMode="cover"
       style={{
         width: '100%',

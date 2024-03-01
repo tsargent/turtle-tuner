@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     width: 100,
-    top: '72%',
+    top: '72.5%',
+    left: '40%',
     alignItems: 'center',
   },
   tone: {
