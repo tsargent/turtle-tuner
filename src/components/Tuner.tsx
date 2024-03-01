@@ -18,8 +18,7 @@ import frequencyToDegrees from '../lib/frequencyToDegrees';
 import {useTuner} from '../lib';
 
 function Tuner(): React.JSX.Element {
-  const tunerData = useTuner();
-  console.log(tunerData);
+  const {degrees, tone} = useTuner();
 
   return (
     <ScreenContainer>
@@ -28,9 +27,12 @@ function Tuner(): React.JSX.Element {
       </View>
 
       <View style={styles.wheelContainer}>
-        <Rotater degrees={tunerData.degrees || 0}>
+        <Rotater degrees={degrees || 0}>
           <Wheel />
         </Rotater>
+      </View>
+      <View style={styles.toneContainer}>
+        <Text style={styles.tone}>{tone}</Text>
       </View>
     </ScreenContainer>
   );
@@ -47,9 +49,17 @@ const styles = StyleSheet.create({
   wheelContainer: {
     top: '43%',
     position: 'absolute',
-    transform: [{scale: 0.85}],
+    transform: [{scale: 0.8}],
+  },
+  toneContainer: {
+    zIndex: 2,
+    position: 'absolute',
+    width: 100,
+    top: '72%',
+    alignItems: 'center',
   },
   tone: {
+    color: 'gray',
     fontSize: 50,
     fontWeight: 'bold',
   },
