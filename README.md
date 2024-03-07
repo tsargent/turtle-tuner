@@ -1,5 +1,4 @@
-![SplashScreen](https://github.com/tsargent/turtle-tuner/assets/173215/90a35844-ab2c-4a3f-8e7f-1c797047f300)
+# Turtle Tuner 🐢
 
-It's a tuner, and a turtle 🐢
+<img src="https://github.com/tsargent/turtle-tuner/assets/173215/90a35844-ab2c-4a3f-8e7f-1c797047f300" width="400" />
 
-Built with React Native ❤️
