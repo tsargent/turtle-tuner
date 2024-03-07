@@ -1,1 +1,1 @@
-- [ ] In-app purchases https://medium.com/@greennolgaa/in-app-purchase-in-react-native-a-comprehensive-guide-777d608fd25
+![SplashScreen](https://github.com/tsargent/turtle-tuner/assets/173215/90a35844-ab2c-4a3f-8e7f-1c797047f300)
