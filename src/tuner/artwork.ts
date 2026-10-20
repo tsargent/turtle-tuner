@@ -30,13 +30,27 @@ export const IMAGES: Record<LayerKey, ImageSourcePropType> = {
   lightRight: require('../../assets/tuner/lightRight.png'),
   flat: require('../../assets/tuner/flat.png'),
   sharp: require('../../assets/tuner/sharp.png'),
+  letterA: require('../../assets/tuner/letterA.png'),
+  letterB: require('../../assets/tuner/letterB.png'),
+  letterC: require('../../assets/tuner/letterC.png'),
+  letterD: require('../../assets/tuner/letterD.png'),
   letterE: require('../../assets/tuner/letterE.png'),
+  letterF: require('../../assets/tuner/letterF.png'),
+  letterG: require('../../assets/tuner/letterG.png'),
   number6: require('../../assets/tuner/number6.png'),
 };
 
-// Only E and 6 have been exported from Figma so far; other glyphs fall back
-// to text until their art is added.
-export const LETTER_ART: Partial<Record<Letter, LayerKey>> = { E: 'letterE' };
+export const LETTER_ART: Record<Letter, LayerKey> = {
+  A: 'letterA',
+  B: 'letterB',
+  C: 'letterC',
+  D: 'letterD',
+  E: 'letterE',
+  F: 'letterF',
+  G: 'letterG',
+};
+// Only 6 has been exported from Figma so far; other digits fall back to text
+// until their art is added.
 export const NUMBER_ART: Partial<Record<number, LayerKey>> = { 6: 'number6' };
 
 // Where the note letter and octave sit inside the display window.

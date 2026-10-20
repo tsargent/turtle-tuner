@@ -12,4 +12,5 @@ The tuner screen is "Test Block 5" on the Design page; "Test Block 4 - Assets" h
 
 - Artwork is stacked transparent layers in `assets/tuner/`, cropped to their bounds, with positions in the 414x896 design frame in `assets/tuner/manifest.json`. Component exports from Figma have the yellow frame fill baked in, so use the source image fills instead.
 - No Hz readout. Notes are spelled C♯ E♭ F♯ G♯ B♭.
-- Only the E letter and 6 numeral are exported so far; other glyphs fall back to text (`LETTER_ART` / `NUMBER_ART` in `src/tuner/artwork.ts`). The Sleep head is also missing.
+- All letters are exported. Only the 6 numeral is, so other octave digits fall back to text (`NUMBER_ART` in `src/tuner/artwork.ts`). The Sleep head is also missing.
+- Exporting a component variant from Figma as PNG at 3x gives a transparent full-frame 1242x2688 image: crop it to its bounds and record the rect in the manifest.
