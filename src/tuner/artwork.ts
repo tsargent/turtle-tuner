@@ -37,7 +37,16 @@ export const IMAGES: Record<LayerKey, ImageSourcePropType> = {
   letterE: require('../../assets/tuner/letterE.png'),
   letterF: require('../../assets/tuner/letterF.png'),
   letterG: require('../../assets/tuner/letterG.png'),
+  number0: require('../../assets/tuner/number0.png'),
+  number1: require('../../assets/tuner/number1.png'),
+  number2: require('../../assets/tuner/number2.png'),
+  number3: require('../../assets/tuner/number3.png'),
+  number4: require('../../assets/tuner/number4.png'),
+  number5: require('../../assets/tuner/number5.png'),
   number6: require('../../assets/tuner/number6.png'),
+  number7: require('../../assets/tuner/number7.png'),
+  number8: require('../../assets/tuner/number8.png'),
+  number9: require('../../assets/tuner/number9.png'),
 };
 
 export const LETTER_ART: Record<Letter, LayerKey> = {
@@ -49,13 +58,19 @@ export const LETTER_ART: Record<Letter, LayerKey> = {
   F: 'letterF',
   G: 'letterG',
 };
-// Only 6 has been exported from Figma so far; other digits fall back to text
-// until their art is added.
-export const NUMBER_ART: Partial<Record<number, LayerKey>> = { 6: 'number6' };
-
-// Where the note letter and octave sit inside the display window.
-export const LETTER_BOX: Rect = { x: 134, y: 705, width: 120, height: 132 };
-export const NUMBER_BOX: Rect = { x: 254, y: 795, width: 34, height: 40 };
+// Indexed by octave. Octaves outside 0–9 can't come from a guitar.
+export const NUMBER_ART: LayerKey[] = [
+  'number0',
+  'number1',
+  'number2',
+  'number3',
+  'number4',
+  'number5',
+  'number6',
+  'number7',
+  'number8',
+  'number9',
+];
 
 // The dial arc is centred at (206, 391) with -50 and +50 cents about 61° either
 // side of vertical. The pivot sits just below the meter window, hidden by the

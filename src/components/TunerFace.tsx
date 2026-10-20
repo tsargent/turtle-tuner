@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Animated, Image, StyleSheet, Text, View } from 'react-native';
+import { Animated, Image } from 'react-native';
 
 import {
   IMAGES,
   LETTER_ART,
-  LETTER_BOX,
   NEEDLE_MAX_ANGLE,
   NEEDLE_PIVOT,
   NUMBER_ART,
-  NUMBER_BOX,
   RECTS,
   type LayerKey,
   type Rect,
@@ -44,9 +42,9 @@ export function TunerFace({ reading, scale }: Props) {
       {layer('bottom')}
       {layer('top')}
       {layer('name')}
-      {reading && <Glyph art={LETTER_ART[reading.letter]} text={reading.letter} box={LETTER_BOX} at={at} scale={scale} />}
+      {reading && layer(LETTER_ART[reading.letter])}
       {reading?.accidental && layer(reading.accidental)}
-      {reading && <Glyph art={NUMBER_ART[reading.octave]} text={String(reading.octave)} box={NUMBER_BOX} at={at} scale={scale} />}
+      {reading && NUMBER_ART[reading.octave] && layer(NUMBER_ART[reading.octave])}
       {reading && layer(lightFor(reading.cents))}
       {layer(headFor(reading))}
     </>
@@ -97,25 +95,3 @@ function useNeedleAngle(reading: NoteReading | null, scale: number) {
     transform: [{ rotate }],
   };
 }
-
-type GlyphProps = {
-  art: LayerKey | undefined;
-  text: string;
-  box: Rect;
-  at: (rect: Rect) => object;
-  scale: number;
-};
-
-function Glyph({ art, text, box, at, scale }: GlyphProps) {
-  if (art) return <Image source={IMAGES[art]} style={at(RECTS[art])} />;
-  return (
-    <View style={[at(box), styles.glyphBox]}>
-      <Text style={[styles.glyphText, { fontSize: box.height * 0.85 * scale }]}>{text}</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  glyphBox: { alignItems: 'center', justifyContent: 'center' },
-  glyphText: { color: '#000', fontWeight: '900' },
-});
