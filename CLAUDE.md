@@ -4,6 +4,12 @@
 
 This is a guitar tuner app.
 
+## Pitch input
+
+- `src/tuner/useMicrophonePitch.ts` streams mic PCM with expo-audio's `useAudioStream` (works in Expo Go) and runs YIN (`src/tuner/detectPitch.ts`) at ~24 kHz every 60 ms.
+- `EXPO_PUBLIC_SIMULATE_PITCH=1 npx expo start` swaps in the fake plucked-string demo.
+- expo-audio bug (SDK 58): `stop()` deactivates the audio session 100 ms later even if the stream was restarted, silently killing it. The hook waits 250 ms after a stop and has a watchdog that restarts a stalled stream.
+
 ## Design
 
 Figma: https://www.figma.com/design/S4kNznYzgtIbo9u7D11XrL/TT3?node-id=3-6148&p=f&t=rXnZJbR1I4i27Sxj-0

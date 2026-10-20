@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { STANDARD_TUNING, frequencyFromMidi } from './notes';
+import type { MicStatus } from './useMicrophonePitch';
 
 const TICK_MS = 50;
 const SETTLE_MS = 2600;
@@ -9,8 +10,9 @@ const REST_MS = 900;
 const STRING_MS = SETTLE_MS + HOLD_MS + REST_MS;
 
 /**
- * Stand-in for microphone input: plucks each open string in turn, starting
- * out of tune and settling onto pitch. Returns null between plucks.
+ * Stand-in for microphone input, for development: plucks each open string in
+ * turn, starting out of tune and settling onto pitch. Same shape as
+ * useMicrophonePitch. Enable with EXPO_PUBLIC_SIMULATE_PITCH=1.
  */
 export function useSimulatedPitch() {
   const [frequency, setFrequency] = useState<number | null>(null);
@@ -35,5 +37,5 @@ export function useSimulatedPitch() {
     return () => clearInterval(id);
   }, []);
 
-  return frequency;
+  return { frequency, status: 'listening' as MicStatus };
 }

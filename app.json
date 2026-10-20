@@ -23,7 +23,14 @@
     },
     "plugins": [
       "expo-router",
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Turtle Tuner listens to your instrument to tell you how in tune it is.",
+          "enableBackgroundPlayback": false
+        }
+      ]
     ],
     "scheme": "turtletuner",
     "experiments": {
