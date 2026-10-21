@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.twsargent.turtle-tuner",
+      "bundleIdentifier": "com.twsargent.tuner",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
