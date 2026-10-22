@@ -18,5 +18,6 @@ The tuner screen is "Test Block 5" on the Design page; "Test Block 4 - Assets" h
 
 - Artwork is stacked transparent layers in `assets/tuner/`, cropped to their bounds, with positions in the 414x896 design frame in `assets/tuner/manifest.json`. Component exports from Figma have the yellow frame fill baked in, so use the source image fills instead.
 - No Hz readout. Notes are spelled C♯ E♭ F♯ G♯ B♭.
+- Idle behavior (from TestFlight feedback): the screen stays awake; the display starts on A4 at 30% opacity, lights to 100% on sound, holds the last note when sound stops, and dims back after 10 s of silence (`useTunerDisplay`). The needle and lights rest whenever nothing is heard. The turtle should sleep while idle once the Sleep head exists (`SLEEP_HEAD`).
 - All letters and numerals are exported. The Sleep head is still missing.
 - Exporting a component variant from Figma as PNG at 3x gives a transparent full-frame 1242x2688 image: crop it to its bounds and record the rect in the manifest.

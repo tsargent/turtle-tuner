@@ -58,6 +58,10 @@ export const LETTER_ART: Record<Letter, LayerKey> = {
   F: 'letterF',
   G: 'letterG',
 };
+// TODO: point at the Sleep head (Heads-v2 → State=1-Sleep) once it's exported;
+// until then the turtle dozes with its eyes open.
+export const SLEEP_HEAD: LayerKey = 'headWake';
+
 // Indexed by octave. Octaves outside 0–9 can't come from a guitar.
 export const NUMBER_ART: LayerKey[] = [
   'number0',

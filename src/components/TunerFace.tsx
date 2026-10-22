@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Animated, Image } from 'react-native';
+import { Animated, Image, StyleSheet } from 'react-native';
 
 import {
   IMAGES,
@@ -8,23 +8,31 @@ import {
   NEEDLE_PIVOT,
   NUMBER_ART,
   RECTS,
+  SLEEP_HEAD,
   type LayerKey,
   type Rect,
 } from '../tuner/artwork';
 import type { NoteReading } from '../tuner/notes';
+import type { DisplayNote } from '../tuner/useTunerDisplay';
 
 const IN_TUNE_CENTS = 5;
 const CLOSE_CENTS = 15;
+const DIM_OPACITY = 0.3;
 
 type Props = {
   /** Current reading, or null when nothing is being heard. */
   reading: NoteReading | null;
+  /** Note shown in the display: the last one heard, or A4 at start. */
+  note: DisplayNote;
+  /** Heard something in the last few seconds: eyes open, display lit. */
+  awake: boolean;
   /** Points per design unit. */
   scale: number;
 };
 
-export function TunerFace({ reading, scale }: Props) {
+export function TunerFace({ reading, note, awake, scale }: Props) {
   const needle = useNeedleAngle(reading, scale);
+  const displayOpacity = useDisplayOpacity(awake);
   const at = (rect: Rect) => ({
     position: 'absolute' as const,
     left: rect.x * scale,
@@ -42,11 +50,13 @@ export function TunerFace({ reading, scale }: Props) {
       {layer('bottom')}
       {layer('top')}
       {layer('name')}
-      {reading && layer(LETTER_ART[reading.letter])}
-      {reading?.accidental && layer(reading.accidental)}
-      {reading && NUMBER_ART[reading.octave] && layer(NUMBER_ART[reading.octave])}
+      <Animated.View style={[StyleSheet.absoluteFill, { opacity: displayOpacity }]}>
+        {layer(LETTER_ART[note.letter])}
+        {note.accidental && layer(note.accidental)}
+        {NUMBER_ART[note.octave] && layer(NUMBER_ART[note.octave])}
+      </Animated.View>
       {reading && layer(lightFor(reading.cents))}
-      {layer(headFor(reading))}
+      {layer(headFor(reading, awake))}
     </>
   );
 }
@@ -57,14 +67,26 @@ function lightFor(cents: number): LayerKey {
   return 'lightCenter';
 }
 
-// The turtle watches the needle and cheers when it's centered.
-// TODO: use the Sleep head while silent once it's exported from Figma.
-function headFor(reading: NoteReading | null): LayerKey {
-  if (!reading) return 'headWake';
+// The turtle watches the needle and cheers when it's centered; between notes
+// it waits with eyes open, then dozes off.
+function headFor(reading: NoteReading | null, awake: boolean): LayerKey {
+  if (!reading) return awake ? 'headWake' : SLEEP_HEAD;
   const { cents } = reading;
   if (Math.abs(cents) <= IN_TUNE_CENTS) return 'headHappy';
   if (Math.abs(cents) <= CLOSE_CENTS) return 'headUp';
   return cents < 0 ? 'headLeft' : 'headRight';
+}
+
+function useDisplayOpacity(awake: boolean) {
+  const [opacity] = useState(() => new Animated.Value(awake ? 1 : DIM_OPACITY));
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: awake ? 1 : DIM_OPACITY,
+      duration: awake ? 250 : 1200,
+      useNativeDriver: true,
+    }).start();
+  }, [opacity, awake]);
+  return opacity;
 }
 
 function useNeedleAngle(reading: NoteReading | null, scale: number) {
