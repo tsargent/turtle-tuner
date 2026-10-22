@@ -18,6 +18,14 @@ const IN_TUNE_CENTS = 5;
 const CLOSE_CENTS = 15;
 const DIM_OPACITY = 0.3;
 
+// Every variant stays mounted and only the active one is shown: changing an
+// <Image>'s source blanks it for a frame on iOS, which flashed the white dial
+// through the turtle's head on every mood change.
+const HEADS: LayerKey[] = ['headSleep', 'headWake', 'headLeft', 'headRight', 'headUp', 'headHappy'];
+const LIGHTS: LayerKey[] = ['lightLeft', 'lightCenter', 'lightRight'];
+const ACCIDENTALS: LayerKey[] = ['flat', 'sharp'];
+const LETTERS = Object.values(LETTER_ART);
+
 type Props = {
   /** Current reading, or null when nothing is being heard. */
   reading: NoteReading | null;
@@ -40,6 +48,10 @@ export function TunerFace({ reading, note, awake, scale }: Props) {
     height: rect.height * scale,
   });
   const layer = (key: LayerKey) => <Image key={key} source={IMAGES[key]} style={at(RECTS[key])} />;
+  const oneOf = (keys: LayerKey[], active: LayerKey | null | undefined) =>
+    keys.map((key) => (
+      <Image key={key} source={IMAGES[key]} style={[at(RECTS[key]), key !== active && styles.hidden]} />
+    ));
 
   return (
     <>
@@ -50,12 +62,12 @@ export function TunerFace({ reading, note, awake, scale }: Props) {
       {layer('top')}
       {layer('name')}
       <Animated.View style={[StyleSheet.absoluteFill, { opacity: displayOpacity }]}>
-        {layer(LETTER_ART[note.letter])}
-        {note.accidental && layer(note.accidental)}
-        {NUMBER_ART[note.octave] && layer(NUMBER_ART[note.octave])}
+        {oneOf(LETTERS, LETTER_ART[note.letter])}
+        {oneOf(ACCIDENTALS, note.accidental)}
+        {oneOf(NUMBER_ART, NUMBER_ART[note.octave])}
       </Animated.View>
-      {reading && layer(lightFor(reading.cents))}
-      {layer(headFor(reading, awake))}
+      {oneOf(LIGHTS, reading && lightFor(reading.cents))}
+      {oneOf(HEADS, headFor(reading, awake))}
     </>
   );
 }
@@ -127,3 +139,7 @@ function useNeedleAngle(reading: NoteReading | null, awake: boolean, scale: numb
     transform: [{ rotate }],
   };
 }
+
+const styles = StyleSheet.create({
+  hidden: { opacity: 0 },
+});
