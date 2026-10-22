@@ -20,6 +20,7 @@ export const IMAGES: Record<LayerKey, ImageSourcePropType> = {
   bottom: require('../../assets/tuner/bottom.png'),
   top: require('../../assets/tuner/top.png'),
   name: require('../../assets/tuner/name.png'),
+  headSleep: require('../../assets/tuner/headSleep.png'),
   headWake: require('../../assets/tuner/headWake.png'),
   headLeft: require('../../assets/tuner/headLeft.png'),
   headRight: require('../../assets/tuner/headRight.png'),
@@ -58,10 +59,6 @@ export const LETTER_ART: Record<Letter, LayerKey> = {
   F: 'letterF',
   G: 'letterG',
 };
-// TODO: point at the Sleep head (Heads-v2 → State=1-Sleep) once it's exported;
-// until then the turtle dozes with its eyes open.
-export const SLEEP_HEAD: LayerKey = 'headWake';
-
 // Indexed by octave. Octaves outside 0–9 can't come from a guitar.
 export const NUMBER_ART: LayerKey[] = [
   'number0',

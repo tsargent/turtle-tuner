@@ -15,6 +15,8 @@ const MIN_RMS = 0.004; // quieter than this is silence; a quiet room is ~0.002
 const MIN_CLARITY = 0.85;
 const HISTORY = 5; // median filter length, kills one-off octave jumps
 const HOLD_MS = 350; // keep showing the note through brief dropouts
+const CONFIRM_HOPS = 4; // a note must hold ~250 ms before it counts, so blips and coughs don't
+const CONFIRM_CENTS = 50;
 const RESTART_DELAY_MS = 250;
 const STALL_MS = 1500;
 
@@ -103,6 +105,8 @@ class Analyzer {
   private pending = 0;
   private pendingCount = 0;
   private history: number[] = [];
+  private recent: number[] = []; // consecutive detections, for confirming a new note
+  private confirmed = false;
   private lastHeardAt = 0;
 
   constructor(sampleRate: number) {
@@ -140,17 +144,28 @@ class Analyzer {
 
     const now = Date.now();
     if (pitch && pitch.clarity >= MIN_CLARITY) {
-      this.lastHeardAt = now;
+      this.recent.push(pitch.frequency);
+      if (this.recent.length > CONFIRM_HOPS) this.recent.shift();
+      if (this.recent.length === CONFIRM_HOPS && spreadCents(this.recent) <= CONFIRM_CENTS) {
+        this.confirmed = true;
+        this.lastHeardAt = now;
+      }
       this.history.push(pitch.frequency);
       if (this.history.length > HISTORY) this.history.shift();
-      return median(this.history);
+      return this.confirmed ? median(this.history) : null;
     }
+    this.recent = [];
     if (now - this.lastHeardAt > HOLD_MS) {
       this.history = [];
+      this.confirmed = false;
       return null;
     }
-    return this.history.length ? median(this.history) : null;
+    return this.confirmed ? median(this.history) : null;
   }
+}
+
+function spreadCents(frequencies: number[]) {
+  return 1200 * Math.log2(Math.max(...frequencies) / Math.min(...frequencies));
 }
 
 function median(values: number[]) {

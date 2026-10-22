@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Animated, Image, StyleSheet } from 'react-native';
+import { Animated, Easing, Image, StyleSheet } from 'react-native';
 
 import {
   IMAGES,
@@ -8,7 +8,6 @@ import {
   NEEDLE_PIVOT,
   NUMBER_ART,
   RECTS,
-  SLEEP_HEAD,
   type LayerKey,
   type Rect,
 } from '../tuner/artwork';
@@ -31,7 +30,7 @@ type Props = {
 };
 
 export function TunerFace({ reading, note, awake, scale }: Props) {
-  const needle = useNeedleAngle(reading, scale);
+  const needle = useNeedleAngle(reading, awake, scale);
   const displayOpacity = useDisplayOpacity(awake);
   const at = (rect: Rect) => ({
     position: 'absolute' as const,
@@ -46,7 +45,7 @@ export function TunerFace({ reading, note, awake, scale }: Props) {
     <>
       {layer('topFill')}
       {layer('dial')}
-      <Animated.Image source={IMAGES.needle} style={[at(RECTS.needle), needle]} />
+      <Animated.Image source={IMAGES.needle} style={[at(RECTS.needle), needle, { opacity: displayOpacity }]} />
       {layer('bottom')}
       {layer('top')}
       {layer('name')}
@@ -70,7 +69,7 @@ function lightFor(cents: number): LayerKey {
 // The turtle watches the needle and cheers when it's centered; between notes
 // it waits with eyes open, then dozes off.
 function headFor(reading: NoteReading | null, awake: boolean): LayerKey {
-  if (!reading) return awake ? 'headWake' : SLEEP_HEAD;
+  if (!reading) return awake ? 'headWake' : 'headSleep';
   const { cents } = reading;
   if (Math.abs(cents) <= IN_TUNE_CENTS) return 'headHappy';
   if (Math.abs(cents) <= CLOSE_CENTS) return 'headUp';
@@ -89,20 +88,31 @@ function useDisplayOpacity(awake: boolean) {
   return opacity;
 }
 
-function useNeedleAngle(reading: NoteReading | null, scale: number) {
-  // Rests at the far left when silent, like an analog meter.
-  const target = reading ? Math.max(-50, Math.min(50, reading.cents)) : -50;
-  const [cents] = useState(() => new Animated.Value(target));
+// Follows the live reading; holds its last position between notes (like the
+// display), and drifts back to center as the turtle falls asleep. It dims with
+// the display, so a held needle never reads as live.
+function useNeedleAngle(reading: NoteReading | null, awake: boolean, scale: number) {
+  const live = reading ? Math.max(-50, Math.min(50, reading.cents)) : null;
+  const [cents] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
-    Animated.spring(cents, {
-      toValue: target,
-      stiffness: 120,
-      damping: 14,
-      mass: 1,
-      useNativeDriver: true,
-    }).start();
-  }, [cents, target]);
+    if (live !== null) {
+      Animated.spring(cents, {
+        toValue: live,
+        stiffness: 120,
+        damping: 14,
+        mass: 1,
+        useNativeDriver: true,
+      }).start();
+    } else if (!awake) {
+      Animated.timing(cents, {
+        toValue: 0,
+        duration: 1500,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [cents, live, awake]);
 
   const rotate = cents.interpolate({
     inputRange: [-50, 50],
