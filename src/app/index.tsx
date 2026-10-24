@@ -1,11 +1,11 @@
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Linking from 'expo-linking';
 import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TunerFace } from '../components/TunerFace';
-import { BACKGROUND, FRAME } from '../tuner/artwork';
+import { BACKGROUND, FRAME, NIGHT_BACKGROUND } from '../tuner/artwork';
 import { readNote } from '../tuner/notes';
 import { useMicrophonePitch } from '../tuner/useMicrophonePitch';
 import { useSimulatedPitch } from '../tuner/useSimulatedPitch';
@@ -22,13 +22,14 @@ export default function TunerScreen() {
   const { frequency, status } = usePitch();
   const reading = frequency === null ? null : readNote(frequency);
   const { note, awake } = useTunerDisplay(reading);
+  const night = useColorScheme() === 'dark';
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, night && styles.night]}>
       <StatusBar hidden />
       {/* Anchored to the bottom so the control panel meets the screen edge. */}
       <View style={{ width: FRAME.width * scale, height: FRAME.height * scale }}>
-        <TunerFace reading={reading} note={note} awake={awake} scale={scale} />
+        <TunerFace reading={reading} note={note} awake={awake} night={night} scale={scale} />
       </View>
       {status === 'denied' && (
         <Pressable onPress={() => Linking.openSettings()} style={[styles.notice, { top: insets.top + 8 }]}>
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
+  night: { backgroundColor: NIGHT_BACKGROUND },
   notice: {
     position: 'absolute',
     left: 16,

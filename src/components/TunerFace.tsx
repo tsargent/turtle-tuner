@@ -3,6 +3,7 @@ import { Animated, Easing, Image, StyleSheet } from 'react-native';
 
 import {
   IMAGES,
+  NIGHT_IMAGES,
   LETTER_ART,
   NEEDLE_MAX_ANGLE,
   NEEDLE_PIVOT,
@@ -33,11 +34,13 @@ type Props = {
   note: DisplayNote;
   /** Heard something in the last few seconds: eyes open, display lit. */
   awake: boolean;
+  /** Use the dark-mode artwork. */
+  night: boolean;
   /** Points per design unit. */
   scale: number;
 };
 
-export function TunerFace({ reading, note, awake, scale }: Props) {
+export function TunerFace({ reading, note, awake, night, scale }: Props) {
   const needle = useNeedleAngle(reading, awake, scale);
   const displayOpacity = useDisplayOpacity(awake);
   const at = (rect: Rect) => ({
@@ -47,10 +50,11 @@ export function TunerFace({ reading, note, awake, scale }: Props) {
     width: rect.width * scale,
     height: rect.height * scale,
   });
-  const layer = (key: LayerKey) => <Image key={key} source={IMAGES[key]} style={at(RECTS[key])} />;
+  const source = (key: LayerKey) => (night && NIGHT_IMAGES[key]) || IMAGES[key];
+  const layer = (key: LayerKey) => <Image key={key} source={source(key)} style={at(RECTS[key])} />;
   const oneOf = (keys: LayerKey[], active: LayerKey | null | undefined) =>
     keys.map((key) => (
-      <Image key={key} source={IMAGES[key]} style={[at(RECTS[key]), key !== active && styles.hidden]} />
+      <Image key={key} source={source(key)} style={[at(RECTS[key]), key !== active && styles.hidden]} />
     ));
 
   return (
