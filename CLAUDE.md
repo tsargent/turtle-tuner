@@ -12,6 +12,12 @@ This is a guitar tuner app.
 - Hot reload keeps the old `Analyzer` instance, so changes to its tuning constants need a full app reload to test.
 - expo-audio bug (SDK 58): `stop()` deactivates the audio session 100 ms later even if the stream was restarted, silently killing it. The hook waits 250 ms after a stop and has a watchdog that restarts a stalled stream.
 
+## Releases
+
+- TestFlight builds: `npx eas-cli@latest build --platform ios --profile production --auto-submit` (App Store Connect app 6825130880, bundle ID `com.twsargent.tuner`).
+- OTA updates (EAS Update) for JS/asset-only changes: `npx eas-cli@latest update --channel production --message "…"`. Only builds made after expo-updates was added can receive them, and only while `version` in app.json matches (runtime policy `appVersion`). Native changes (new native modules, permissions, most app.json fields such as `userInterfaceStyle`) need a new build.
+- `.npmrc` sets `legacy-peer-deps` to match how the lockfile is written; EAS runs `npm ci` and fails if they disagree.
+
 ## Design
 
 Figma: https://www.figma.com/design/S4kNznYzgtIbo9u7D11XrL/TT3?node-id=3-6148&p=f&t=rXnZJbR1I4i27Sxj-0
