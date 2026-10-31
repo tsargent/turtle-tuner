@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View, useColorScheme, useWindowDimensions 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TunerFace } from '../components/TunerFace';
+import { VersionLabel } from '../components/VersionLabel';
 import { BACKGROUND, FRAME, NIGHT_BACKGROUND } from '../tuner/artwork';
 import { readNote } from '../tuner/notes';
 import { useKeepAwakeWhileHeard } from '../tuner/useKeepAwakeWhileHeard';
@@ -30,6 +31,7 @@ export default function TunerScreen() {
       {/* Anchored to the bottom so the control panel meets the screen edge. */}
       <View style={{ width: FRAME.width * scale, height: FRAME.height * scale }}>
         <TunerFace reading={reading} note={note} awake={awake} night={night} scale={scale} />
+        <VersionLabel scale={scale} />
       </View>
       {status === 'denied' && (
         <Pressable onPress={() => Linking.openSettings()} style={[styles.notice, { top: insets.top + 8 }]}>
