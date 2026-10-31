@@ -70,3 +70,7 @@ npx eas-cli@latest update --channel production --environment production --messag
 ```
 
 Changes to native code or `app.json` need a new build. Phones pick up an update after two relaunches.
+
+## License
+
+Copyright © 2026 Tyler Sargent. All rights reserved. See [LICENSE](LICENSE).

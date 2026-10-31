@@ -42,6 +42,7 @@
     "prepare": "husky"
   },
   "private": true,
+  "license": "UNLICENSED",
   "jest": {
     "preset": "jest-expo"
   }
