@@ -1,4 +1,3 @@
-import { useKeepAwake } from 'expo-keep-awake';
 import * as Linking from 'expo-linking';
 import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from 'react-native';
@@ -7,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TunerFace } from '../components/TunerFace';
 import { BACKGROUND, FRAME, NIGHT_BACKGROUND } from '../tuner/artwork';
 import { readNote } from '../tuner/notes';
+import { useKeepAwakeWhileHeard } from '../tuner/useKeepAwakeWhileHeard';
 import { useMicrophonePitch } from '../tuner/useMicrophonePitch';
 import { useSimulatedPitch } from '../tuner/useSimulatedPitch';
 import { useTunerDisplay } from '../tuner/useTunerDisplay';
@@ -14,14 +14,14 @@ import { useTunerDisplay } from '../tuner/useTunerDisplay';
 const usePitch = process.env.EXPO_PUBLIC_SIMULATE_PITCH === '1' ? useSimulatedPitch : useMicrophonePitch;
 
 export default function TunerScreen() {
-  // Tuning takes both hands; don't let the screen sleep while the app is open.
-  useKeepAwake();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const scale = Math.min(width / FRAME.width, height / FRAME.height);
   const { frequency, status } = usePitch();
   const reading = frequency === null ? null : readNote(frequency);
   const { note, awake } = useTunerDisplay(reading);
+  // Tuning takes both hands, so the screen stays on while notes keep coming.
+  useKeepAwakeWhileHeard(reading !== null);
   const night = useColorScheme() === 'dark';
 
   return (
