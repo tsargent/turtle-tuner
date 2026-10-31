@@ -4,6 +4,8 @@
 
 This is a guitar tuner app.
 
+- Tests: Jest with the `jest-expo` preset (`npm test`, `npm run test:watch`). Put them in `__tests__/` next to the code, never under `src/app/` (every file there is a route). The pre-commit hook runs lint, typecheck and tests; commit messages must be conventional commits.
+
 ## Pitch input
 
 - `src/tuner/useMicrophonePitch.ts` streams mic PCM with expo-audio's `useAudioStream` (works in Expo Go) and runs YIN (`src/tuner/detectPitch.ts`) at ~24 kHz every 60 ms.
